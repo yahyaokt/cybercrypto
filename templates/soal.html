@@ -2,479 +2,362 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>CYBER CRYPTOGRAPHY MISSION</title>
+    <title>Mission Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
-        
         :root {
-            --neon-cyan: #00ffff;
-            --neon-pink: #ff00ff;
-            --neon-green: #00ff41;
-            --dark-bg: #0a0e27;
-            --card-bg: #0f1419;
-            --border-glow: rgba(0, 255, 255, 0.3);
+            --bg-deep: #030712;
+            --glass-bg: rgba(17, 24, 39, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-surface: #111827;
+            --success: #10b981;
+            --error: #ef4444;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--dark-bg);
-            color: var(--neon-cyan);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.03) 30%, rgba(0, 255, 255, 0.03) 70%, transparent 70%),
-                linear-gradient(-45deg, transparent 30%, rgba(255, 0, 255, 0.03) 30%, rgba(255, 0, 255, 0.03) 70%, transparent 70%);
-            background-size: 100px 100px;
-            animation: bgScroll 20s linear infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        @keyframes bgScroll {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 100px 100px, -100px 100px; }
-        }
-        
-        /* Scanline Effect */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                transparent 50%,
-                rgba(0, 255, 255, 0.03) 50%
-            );
-            background-size: 100% 4px;
-            animation: scanline 8s linear infinite;
-            pointer-events: none;
-            z-index: 999;
-        }
-        
-        @keyframes scanline {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100vh); }
+            background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1), transparent 40%);
         }
 
-        .card {
-            background: rgba(15, 20, 25, 0.9);
-            border: 2px solid var(--border-glow);
-            border-radius: 20px;
+        .container { width: 100%; max-width: 850px; }
+
+        .nav-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        .main-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
             padding: 40px;
-            width: 100%;
-            max-width: 900px;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 255, 0.2),
-                inset 0 0 50px rgba(0, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            position: relative;
-            z-index: 1;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-green), var(--neon-cyan));
-            border-radius: 20px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-            animation: borderRotate 4s linear infinite;
-            background-size: 300% 300%;
-        }
-        
-        @keyframes borderRotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .card:hover::before {
-            opacity: 0.3;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
         }
 
         h1 {
-            margin-top: 0;
+            font-size: 2rem;
+            font-weight: 700;
             margin-bottom: 10px;
-            font-family: 'Orbitron', monospace;
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            color: var(--neon-cyan);
-            text-shadow: 
-                0 0 10px var(--neon-cyan),
-                0 0 20px var(--neon-cyan),
-                0 0 40px var(--neon-cyan);
-            animation: flicker 3s infinite alternate;
-        }
-        
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            41%, 43% { opacity: 0.8; }
-            45% { opacity: 1; }
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .subtitle {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            color: var(--neon-green);
-            margin-bottom: 25px;
-            line-height: 1.7;
-            font-weight: 300;
-        }
-        
-        .terminal-prefix {
-            color: var(--neon-cyan);
-            margin-right: 5px;
+        .description {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.6;
         }
 
-        .top-buttons {
+        /* Status Bar */
+        .status-bar {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 40px;
             display: flex;
-            gap: 12px;
-            margin: 20px 0 30px;
-            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .score-display {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .score-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+        .score-number { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+
+        /* Question Card */
+        .challenge-card {
+            background: var(--card-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: border-color 0.3s;
         }
 
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Orbitron', monospace;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--neon-cyan);
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-        
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        button:hover {
-            background: rgba(0, 255, 255, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        button.submit-btn {
-            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-green));
-            color: #000;
-            border: none;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            margin-top: 30px;
-        }
-        
-        button.submit-btn:hover {
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
-        }
+        .challenge-card:hover { border-color: rgba(99, 102, 241, 0.3); }
 
-        .score-box {
-            margin: 20px 0;
-            padding: 20px 25px;
-            border-radius: 12px;
-            background: rgba(0, 255, 65, 0.1);
-            border: 2px solid rgba(0, 255, 65, 0.5);
-            font-family: 'Orbitron', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .score-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-            animation: scan 2s infinite;
-        }
-        
-        @keyframes scan {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .score-box.bad {
-            background: rgba(255, 0, 0, 0.1);
-            border-color: rgba(255, 0, 0, 0.6);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
-        }
-        
-        .score-box b {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        .question-block {
-            margin: 30px 0;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 12px;
-            border-left: 4px solid var(--neon-cyan);
-            transition: all 0.3s;
-        }
-        
-        .question-block:hover {
-            border-left-color: var(--neon-pink);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-        }
-
-        .question-block p {
-            font-size: 1rem;
-            color: #e5e7eb;
-            line-height: 1.7;
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 15px;
-            font-weight: 500;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-muted);
         }
         
-        .question-block p b {
-            color: var(--neon-green);
-            font-weight: 700;
+        .tag.enc { color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .tag.dec { color: #10b981; background: rgba(16, 185, 129, 0.1); }
+
+        .challenge-text {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #cbd5e1;
         }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--neon-cyan);
-            font-weight: 700;
+        .code-snippet {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #a5b4fc;
+            font-size: 0.9em;
         }
 
-        input[type="text"], textarea {
+        input[type="text"] {
             width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
             border-radius: 10px;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--neon-cyan);
             padding: 12px 16px;
-            font-family: 'Courier New', monospace;
+            color: white;
+            font-family: 'Fira Code', monospace;
             font-size: 1rem;
-            outline: none;
             transition: all 0.3s;
         }
 
-        input[type="text"]:focus, textarea:focus {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-            background: rgba(0, 0, 0, 0.8);
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0,0,0,0.5);
         }
 
-        .feedback {
+        /* Result Feedback */
+        .result-box {
+            margin-top: 15px;
+            padding: 12px 16px;
+            border-radius: 10px;
             font-size: 0.9rem;
-            margin-top: 10px;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-weight: 500;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
         }
 
-        .correct {
-            color: var(--neon-green);
-            background: rgba(0, 255, 65, 0.1);
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 6px;
-            text-shadow: 0 0 10px var(--neon-green);
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .wrong {
-            color: #ff3333;
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 6px;
-            text-shadow: 0 0 10px #ff3333;
-        }
+        .res-correct { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #34d399; }
+        .res-wrong { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; }
 
-        .expected {
-            color: var(--neon-pink);
-            display: block;
-            margin-top: 8px;
+        .submit-all {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        a {
-            text-decoration: none;
-            display: inline-block;
+        .submit-all:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
         }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8rem;
-                letter-spacing: 3px;
-            }
-            
-            .card {
-                padding: 25px;
-            }
-            
-            .question-block {
-                padding: 20px;
-            }
-        }
+
     </style>
 </head>
-
 <body>
-<div class="card">
-
-    <h1>⚡ MISSION FILES ⚡</h1>
-
-    <p class="subtitle">
-        <span class="terminal-prefix">></span>TRAINING PROTOCOL: Caesar Cipher | Vigenère Cipher | Rail Fence Cipher<br>
-        <span class="terminal-prefix">></span>OBJECTIVE: Complete all encryption/decryption challenges<br>
-        <span class="terminal-prefix">></span>STATUS: Input answers and execute verification protocol
-    </p>
-
-    <div class="top-buttons">
-        <a href="{{ url_for('index') }}">
-            <button>⬅ RETURN TO TERMINAL</button>
+<div class="container">
+    
+    <div class="nav-header">
+        <a href="{{ url_for('index') }}" class="back-link">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Return to Terminal
         </a>
+        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">LAB SESSION: #001</div>
     </div>
 
-    {% if score is not none %}
-        <div class="score-box {% if score < max_score/2 %}bad{% endif %}">
-            <span class="terminal-prefix">></span>MISSION SCORE: <b>{{ score }}/{{ max_score }}</b>
-            {% if score == max_score %}
-                <br><span class="terminal-prefix">></span>STATUS: PERFECT EXECUTION 🎉 All protocols mastered!
-            {% elif score >= 2 %}
-                <br><span class="terminal-prefix">></span>STATUS: GOOD PROGRESS 🔧 Review failed protocols
-            {% else %}
-                <br><span class="terminal-prefix">></span>STATUS: NEEDS TRAINING 💪 Study encryption methods
-            {% endif %}
-        </div>
-    {% endif %}
+    <div class="main-card">
+        <h1>Mission Files</h1>
+        <p class="description">Complete the encryption challenges below. Accuracy is key.</p>
 
-    <form method="POST" action="{{ url_for('soal') }}">
+        {% if score is not none %}
+            <div class="status-bar">
+                <div class="score-display">
+                    <span class="score-label">Current Proficiency</span>
+                    <span class="score-number">{{ score }} <span style="font-size:1rem; color: var(--text-muted); font-weight:400;">/ {{ max_score }}</span></span>
+                </div>
+                <div style="text-align: right;">
+                    {% if score == max_score %}
+                        <span style="color: var(--success); font-weight: 600;">Excellent. All protocols verified.</span>
+                    {% elif score >= 2 %}
+                        <span style="color: #f59e0b; font-weight: 600;">Good progress. Review errors.</span>
+                    {% else %}
+                        <span style="color: var(--text-muted);">Training required.</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
 
-        <div class="question-block">
-            <p><b>CHALLENGE 1:</b> Encrypt text <b>"HELLO WORLD"</b> using <b>Caesar Cipher</b> with shift = 5.</p>
-            <label for="q1">⟨ INPUT CIPHER TEXT ⟩</label>
-            <input type="text" id="q1" name="q1" value="{{ q1 }}" placeholder="Enter encrypted result..." />
-            {% if results.get('q1') %}
-                <div class="feedback">
+        <form method="POST" action="{{ url_for('soal') }}">
+
+            <div class="challenge-card">
+                <div class="challenge-header">
+                    <span class="tag enc">Encryption</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">CAESAR CIPHER</span>
+                </div>
+                <p class="challenge-text">
+                    Encrypt this sentence using <span class="code-snippet">Shift = 9</span>:<br>
+                    <strong style="color: white; display:block; margin-top:8px;">"Ayam dan kambing adalah makanan yang sangat enak"</strong>
+                </p>
+                <input type="text" name="q1" value="{{ q1 }}" placeholder="Output ciphertext..." autocomplete="off"/>
+                {% if results.get('q1') %}
                     {% if results['q1'].correct %}
-                        <span class="correct">✔ CORRECT</span>
+                        <div class="result-box res-correct"><span>✓ Correct Answer</span></div>
                     {% else %}
-                        <span class="wrong">✘ INCORRECT</span>
-                        <span class="expected">→ Expected output: {{ results['q1'].expected }}</span>
+                        <div class="result-box res-wrong">
+                            <div style="display:flex; flex-direction:column;">
+                                <span>✕ Incorrect</span>
+                                <span style="font-size:0.8rem; opacity:0.8; font-family:'Fira Code'; margin-top:4px;">Expected: {{ results['q1'].expected }}</span>
+                            </div>
+                        </div>
                     {% endif %}
-                </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
 
-        <div class="question-block">
-            <p><b>CHALLENGE 2:</b> Decrypt cipher <b>"RIJVS UYVJN"</b> using <b>Vigenère Cipher</b> (key = "KEY").</p>
-            <label for="q2">⟨ INPUT PLAIN TEXT ⟩</label>
-            <input type="text" id="q2" name="q2" value="{{ q2 }}" placeholder="Enter decrypted result..." />
-            {% if results.get('q2') %}
-                <div class="feedback">
+            <div class="challenge-card">
+                <div class="challenge-header">
+                    <span class="tag dec">Decryption</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">CAESAR CIPHER</span>
+                </div>
+                <p class="challenge-text">
+                    Decrypt this cipher (<span class="code-snippet">Shift = 5</span>):<br>
+                    <strong style="color: white; display:block; margin-top:8px;">"FPZ XZPF NSITRNJ WJSFSL"</strong>
+                </p>
+                <input type="text" name="q2" value="{{ q2 }}" placeholder="Output plaintext..." autocomplete="off"/>
+                {% if results.get('q2') %}
                     {% if results['q2'].correct %}
-                        <span class="correct">✔ CORRECT</span>
+                        <div class="result-box res-correct"><span>✓ Correct Answer</span></div>
                     {% else %}
-                        <span class="wrong">✘ INCORRECT</span>
-                        <span class="expected">→ Expected output: {{ results['q2'].expected }}</span>
+                        <div class="result-box res-wrong">
+                            <div style="display:flex; flex-direction:column;">
+                                <span>✕ Incorrect</span>
+                                <span style="font-size:0.8rem; opacity:0.8; font-family:'Fira Code'; margin-top:4px;">Expected: {{ results['q2'].expected }}</span>
+                            </div>
+                        </div>
                     {% endif %}
-                </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
 
-        <div class="question-block">
-            <p><b>CHALLENGE 3:</b> Encrypt text <b>"CRYPTOGRAPHY"</b> using <b>Rail Fence Cipher</b> with rail = 3.</p>
-            <label for="q3">⟨ INPUT CIPHER TEXT ⟩</label>
-            <input type="text" id="q3" name="q3" value="{{ q3 }}" placeholder="Enter encrypted result..." />
-            {% if results.get('q3') %}
-                <div class="feedback">
+            <div class="challenge-card">
+                <div class="challenge-header">
+                    <span class="tag dec">Decryption</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">VIGENÈRE CIPHER</span>
+                </div>
+                <p class="challenge-text">
+                    Decrypt using <span class="code-snippet">Key = "KAMBING"</span>:<br>
+                    <strong style="color: white; display:block; margin-top:8px;">"UUPB BRXLAZH SRRSHMUIA HYHAOOAEK"</strong>
+                </p>
+                <input type="text" name="q3" value="{{ q3 }}" placeholder="Output plaintext..." autocomplete="off"/>
+                {% if results.get('q3') %}
                     {% if results['q3'].correct %}
-                        <span class="correct">✔ CORRECT</span>
+                        <div class="result-box res-correct"><span>✓ Correct Answer</span></div>
                     {% else %}
-                        <span class="wrong">✘ INCORRECT</span>
-                        <span class="expected">→ Expected output: {{ results['q3'].expected }}</span>
+                        <div class="result-box res-wrong">
+                            <div style="display:flex; flex-direction:column;">
+                                <span>✕ Incorrect</span>
+                                <span style="font-size:0.8rem; opacity:0.8; font-family:'Fira Code'; margin-top:4px;">Expected: {{ results['q3'].expected }}</span>
+                            </div>
+                        </div>
                     {% endif %}
-                </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
 
-        <div class="question-block">
-            <p><b>CHALLENGE 4:</b> Decrypt cipher <b>"WECRLTEERDSOEEFEAOCAIVDEN"</b> using <b>Rail Fence Cipher</b> (rail = 3).</p>
-            <label for="q4">⟨ INPUT PLAIN TEXT ⟩</label>
-            <input type="text" id="q4" name="q4" value="{{ q4 }}" placeholder="Enter decrypted result (with or without spaces)..." />
-            {% if results.get('q4') %}
-                <div class="feedback">
+            <div class="challenge-card">
+                <div class="challenge-header">
+                    <span class="tag dec">Decryption</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">RAIL FENCE CIPHER</span>
+                </div>
+                <p class="challenge-text">
+                    Decrypt using <span class="code-snippet">Rail Count = 3</span>:<br>
+                    <strong style="color: white; display:block; margin-top:8px;">"STN NRKKEU EAGIA EAGA AAMRNKMNIT"</strong>
+                </p>
+                <input type="text" name="q4" value="{{ q4 }}" placeholder="Output plaintext..." autocomplete="off"/>
+                {% if results.get('q4') %}
                     {% if results['q4'].correct %}
-                        <span class="correct">✔ CORRECT</span>
+                        <div class="result-box res-correct"><span>✓ Correct Answer</span></div>
                     {% else %}
-                        <span class="wrong">✘ INCORRECT</span>
-                        <span class="expected">→ Expected output: {{ results['q4'].expected }}</span>
+                        <div class="result-box res-wrong">
+                            <div style="display:flex; flex-direction:column;">
+                                <span>✕ Incorrect</span>
+                                <span style="font-size:0.8rem; opacity:0.8; font-family:'Fira Code'; margin-top:4px;">Expected: {{ results['q4'].expected }}</span>
+                            </div>
+                        </div>
                     {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="challenge-card">
+                <div class="challenge-header">
+                    <span class="tag dec">Decryption</span>
+                    <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);">VIGENÈRE CIPHER</span>
                 </div>
-            {% endif %}
-        </div>
+                <p class="challenge-text">
+                    Decrypt using <span class="code-snippet">Key = "DINOSAURUS"</span>:<br>
+                    <strong style="color: white; display:block; margin-top:8px;">"NQGO KELRHY UCFWS BYJIC PIYOE YU"</strong>
+                </p>
+                <input type="text" name="q5" value="{{ q5 }}" placeholder="Output plaintext..." autocomplete="off"/>
+                {% if results.get('q5') %}
+                    {% if results['q5'].correct %}
+                        <div class="result-box res-correct"><span>✓ Correct Answer</span></div>
+                    {% else %}
+                        <div class="result-box res-wrong">
+                            <div style="display:flex; flex-direction:column;">
+                                <span>✕ Incorrect</span>
+                                <span style="font-size:0.8rem; opacity:0.8; font-family:'Fira Code'; margin-top:4px;">Expected: {{ results['q5'].expected }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
 
-        <button type="submit" class="submit-btn">⚡ EXECUTE VERIFICATION PROTOCOL</button>
-    </form>
-
+            <button type="submit" class="submit-all">Verify All Challenges</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

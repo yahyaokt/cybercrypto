@@ -3,7 +3,6 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
-# ================== FUNGSI KRIPTOGRAFI ==================
 def caesar_cipher(text, shift, mode="encrypt"):
     """Caesar Cipher: geser huruf dengan shift tertentu."""
     if mode == "decrypt":
@@ -18,7 +17,6 @@ def caesar_cipher(text, shift, mode="encrypt"):
             base = ord("a")
             result.append(chr((ord(ch) - base + shift) % 26 + base))
         else:
-            # karakter selain huruf tidak diubah (spasi, angka, tanda baca)
             result.append(ch)
     return "".join(result)
 
@@ -193,20 +191,18 @@ def index():
         mode=mode,
     )
 
-
-# ================== ROUTE HALAMAN SOAL + PENILAIAN ==================
 @app.route("/soal", methods=["GET", "POST"])
 def soal():
-    # jawaban benar (ground truth)
-    correct_q1 = "MJQQT BTWQI"  # Caesar shift 5 dari "HELLO WORLD"
-    correct_q2 = "HELLO WORLD"  # Dekripsi Vigenere (KEY) dari "RIJVS UYVJN"
-    correct_q3 = rail_fence_encrypt("CRYPTOGRAPHY", 3)  # enkripsi RF rails=3
-    correct_q4 = rail_fence_decrypt("WECRLTEERDSOEEFEAOCAIVDEN", 3)  # dekripsi RF rails=3
+    correct_q1 = "JHJV MJW TJVKRWP JMJUJQ VJTJWJW HJWP BJWPJC NWJT"
+    correct_q2 = "AKU SUKA INDOMIE RENANG"
+    correct_q3 = "KUDA TERBANG KELIHATAN BOHONGNYA"
+    correct_q4 = "SEMUT RENANG IKAN MERANGKAI KATA"
+    correct_q5 = "KITA SERANG RUSIA BESOK MALAM YA"
 
     score = None
-    max_score = 4
+    max_score = 5
     results = {}
-    # simpan jawaban user supaya tetap muncul di form setelah submit
+
     q1 = q2 = q3 = q4 = q5 = ""
 
     if request.method == "POST":
@@ -219,33 +215,40 @@ def soal():
         score = 0
         results = {}
 
-        # cek 1–4, nomor 5 latihan bebas (tidak dinilai otomatis)
+        # Q1
         if normalize_answer(q1) == normalize_answer(correct_q1):
             score += 1
             results["q1"] = {"correct": True, "expected": correct_q1}
         else:
             results["q1"] = {"correct": False, "expected": correct_q1}
 
+        # Q2
         if normalize_answer(q2) == normalize_answer(correct_q2):
             score += 1
             results["q2"] = {"correct": True, "expected": correct_q2}
         else:
             results["q2"] = {"correct": False, "expected": correct_q2}
 
+        # Q3
         if normalize_answer(q3) == normalize_answer(correct_q3):
             score += 1
             results["q3"] = {"correct": True, "expected": correct_q3}
         else:
             results["q3"] = {"correct": False, "expected": correct_q3}
 
+        # Q4
         if normalize_answer(q4) == normalize_answer(correct_q4):
             score += 1
             results["q4"] = {"correct": True, "expected": correct_q4}
         else:
             results["q4"] = {"correct": False, "expected": correct_q4}
 
-        # q5 hanya ditampilkan (tanpa skor otomatis)
-        results["q5"] = {"correct": None, "expected": None}
+        # Q5
+        if normalize_answer(q5) == normalize_answer(correct_q5):
+            score += 1
+            results["q5"] = {"correct": True, "expected": correct_q5}
+        else:
+            results["q5"] = {"correct": False, "expected": correct_q5}
 
     return render_template(
         "soal.html",
@@ -258,6 +261,7 @@ def soal():
         q4=q4,
         q5=q5,
     )
+
 
 
 if __name__ == "__main__":
